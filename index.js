@@ -33,7 +33,17 @@ const run = async () => {
         const posts = await postCollection.find({}).toArray();
         res.send(posts);
         // console.log(posts);
+    });
+
+    // getting single post by id
+    app.get('/post-details/:id',async(req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id)};
+        const result = await postCollection.findOne(filter);
+        // console.log(id);
+        res.send(result);
     })
+
   } finally {
   }
 };
