@@ -20,12 +20,20 @@ const run = async () => {
   const postCollection = client.db("social-people").collection("posts");
 
   try {
+    // storing post to db
     app.post("/post", async (req, res) => {
       const post = req.body;
-      const result = postCollection.insertOne(post);
+      const result = await postCollection.insertOne(post);
     //   console.log(post);
       res.send(result)
     });
+
+    // getting all post from db
+    app.get('/posts', async(req, res)=>{
+        const posts = await postCollection.find({}).toArray();
+        res.send(posts);
+        // console.log(posts);
+    })
   } finally {
   }
 };
