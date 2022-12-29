@@ -45,6 +45,12 @@ const run = async () => {
       res.send(sortByLike);
     });
 
+    // getting popular post based on comments
+    app.get('/popular-posts', async (req, res)=>{
+      const popularPosts = await postCollection.find({}).sort({comment:-1}).limit(3).toArray();
+      res.send(popularPosts);
+    })
+
     // getting single post by id
     app.get("/post-details/:id", async (req, res) => {
       const id = req.params.id;
@@ -62,7 +68,18 @@ const run = async () => {
       const like = req.body.value;
       const updateLike = { $set: { like: like } };
       const result = await postCollection.updateOne(filter, updateLike);
-      console.log(like);
+      // console.log(like);
+      res.send(result);
+    });
+
+    // updating comment
+    app.patch("/post-comment/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const comment = req.body;
+      const updateComment = { $set:  comment} ;
+      const result = await postCollection.updateOne(filter, updateComment);
       res.send(result);
     });
 
