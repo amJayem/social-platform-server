@@ -21,6 +21,7 @@ const run = async () => {
   const activitiesCollection = client
     .db("social-people")
     .collection("activities");
+  const commentCollection = client.db("social-people").collection("comments");
 
   try {
     // storing post to db
@@ -63,7 +64,7 @@ const run = async () => {
     app.post("/my-reaction", async (req, res) => {
       const relatedPostInfo = req.body;
       const result = await activitiesCollection.insertOne(relatedPostInfo);
-      console.log(relatedPostInfo);
+      // console.log(relatedPostInfo);
       res.send(result);
     });
 
@@ -72,10 +73,18 @@ const run = async () => {
       const id = req.params.id;
       const filter = { postId: id };
       const result = await activitiesCollection.findOne(filter);
-    //   console.log(result);
+      //   console.log(result);
       if (result) {
         res.send(result);
       }
+    });
+
+    // posting comments to db
+    app.post("/comment", async (req, res) => {
+      const comment = req.body;
+      // console.log(comment);
+      const result = await commentCollection.insertOne(comment);
+      res.send(result);
     });
   } finally {
   }
