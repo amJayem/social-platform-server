@@ -39,6 +39,12 @@ const run = async () => {
       // console.log(posts);
     });
 
+    //getting all post from db sorted
+    app.get("/like-sort", async (req, res) => {
+      const sortByLike = await postCollection.find({}).sort({like:-1}).limit(3).toArray();
+      res.send(sortByLike);
+    });
+
     // getting single post by id
     app.get("/post-details/:id", async (req, res) => {
       const id = req.params.id;
@@ -85,6 +91,14 @@ const run = async () => {
       // console.log(comment);
       const result = await commentCollection.insertOne(comment);
       res.send(result);
+    });
+
+    // getting single post comment
+    app.get("/all-comments/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { postId: id };
+      const allComments = await commentCollection.find(filter).toArray();
+      res.send(allComments);
     });
   } finally {
   }
