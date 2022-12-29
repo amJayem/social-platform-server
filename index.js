@@ -40,7 +40,7 @@ const run = async () => {
     });
 
     //getting all post from db sorted
-    app.get("/like-sort", async (req, res) => {
+    app.get("/top-posts", async (req, res) => {
       const sortByLike = await postCollection.find({}).sort({like:-1}).limit(3).toArray();
       res.send(sortByLike);
     });
