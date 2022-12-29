@@ -76,9 +76,6 @@ const run = async () => {
       if (result) {
         res.send(result);
       }
-      else{
-        res.send({success: 'wait'})
-      }
     });
   } finally {
   }
