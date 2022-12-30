@@ -22,6 +22,7 @@ const run = async () => {
     .db("social-people")
     .collection("activities");
   const commentCollection = client.db("social-people").collection("comments");
+  const aboutCollection = client.db('social-people').collection('about');
 
   try {
     // storing post to db
@@ -117,6 +118,25 @@ const run = async () => {
       const allComments = await commentCollection.find(filter).toArray();
       res.send(allComments);
     });
+
+    // update about info
+    app.patch('/update-about/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id)}
+      const about = req.body;
+      const updateComment = { $set:  about} ;
+      const result = await aboutCollection.updateOne(filter, updateComment);
+      res.send(result);
+      // console.log(updateComment);
+    });
+
+    // getting updated-profile
+    app.get('/about', async(req,res)=>{
+      const id = { _id:ObjectId('63ae777b11aed881a5bf221f')}
+      const result = await aboutCollection.findOne(id);
+      res.send(result);
+    })
+
   } finally {
   }
 };
