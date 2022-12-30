@@ -35,8 +35,9 @@ const run = async () => {
 
     // getting all post from db
     app.get("/posts", async (req, res) => {
-      const posts = await postCollection.find({}).toArray();
-      res.send(posts);
+      const posts = postCollection.find({}).sort( { _id: -1 } );
+      const result = await posts.toArray();
+      res.send(result);
       // console.log(posts);
     });
 
